@@ -1,0 +1,7 @@
+config,prauc,roc,base
+RF tüm özellik genişleyen,0.067,0.6,0.042
+RF k=10 kayan(500),0.051,0.561,0.042
+LogReg k=20 kayan(500),0.051,0.523,0.042
+RF k=40 genişleyen,0.047,0.518,0.042
+RF k=10 genişleyen,0.04,0.483,0.042
+LogReg k=10 genişleyen,0.04,0.495,0.042
