@@ -1,0 +1,5 @@
+model,prauc,lo,hi
+LogReg (class_weight),0.135,0.102,0.193
+LogReg + SMOTE,0.138,0.102,0.199
+RandomForest,0.206,0.157,0.283
+XGBoost,0.173,0.132,0.249

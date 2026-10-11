@@ -13,6 +13,8 @@ The main question is not only *which model is best*, but *whether the result hol
 | Walk-forward (expanding window) | Random Forest, all features | 0.067 | 0.042 |
 
 - Random cross-validation looks promising; time-aware validation removes most of that advantage (concept drift, few positives).
+- **Why:** 61% of sensors show statistically significant distribution shift between the first 70% and last 30% of the timeline (KS test, Bonferroni); 78% of the 40 sensors the model selects have drifted.
+- A classical SPC chart (PCA-based Hotelling T²) is equally at chance level on the chronological test, so the problem is the data drifting, not the method. Bootstrap 95% CIs include the random baseline for both.
 - Even a weak model can pay off with a cost-sensitive threshold: with a missed-defect cost 10x the false-alarm cost, total cost drops ~35% versus "no inspection" (cost ratios are assumptions, not plant data).
 
 ## Pipeline
@@ -26,6 +28,9 @@ src/data.py          load SECOM, time-ordered
 src/eda.py           exploratory plots
 src/models.py        model comparison (CV + chronological split)
 src/temporal.py      walk-forward evaluation
+src/drift.py         KS-test drift analysis
+src/spc.py           Hotelling T2 vs Random Forest + bootstrap CIs
+src/bootstrap_cv.py  bootstrap CIs for CV results
 src/cost_shap.py     cost-sensitive threshold + SHAP
 notebooks/01_ozet.ipynb   summary of all outputs
 reports/             figures and result tables
@@ -37,7 +42,7 @@ reports/             figures and result tables
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 # download https://archive.ics.uci.edu/static/public/179/secom.zip and unzip into data/raw/
-cd src && python eda.py && python models.py && python temporal.py && python cost_shap.py
+cd src && python eda.py && python models.py && python temporal.py && python drift.py && python spc.py && python bootstrap_cv.py && python cost_shap.py
 ```
 
 ## Limitations

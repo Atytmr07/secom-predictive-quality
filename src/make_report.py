@@ -58,6 +58,23 @@ P("")
 P("Kaçırma maliyeti yükseldikçe model tabanlı eşik, her iki uç stratejiye göre daha düşük maliyet sağlamaktadır; oran 10'da kazanç kontrolsüz stratejiye göre yaklaşık %35'tir. Bu sayılar çapraz doğrulama tahminlerine dayanır ve yukarıdaki zamansal sınırlılık nedeniyle iyimser olabilir.")
 F("cost_threshold.png", "Şekil 2. Eşiğe göre toplam maliyet (Random Forest, çapraz doğrulama tahminleri).")
 
+H("4.3b Belirsizlik: güven aralıkları", 2)
+cb = pd.read_csv(R + "cv_bootstrap.csv"); cb["aralik"] = cb.apply(lambda r: f"{r.lo:.3f} – {r.hi:.3f}", axis=1)
+table(cb, ["model", "prauc", "aralik"], ["Model", "PR-AUC", "%95 bootstrap aralığı"])
+P("")
+P("Random Forest'ın aralığı diğer modellerin aralığıyla kısmen örtüşse de belirgin biçimde daha yüksektir ve rastgele tahmin düzeyinin (0,066) üzerindedir. Not: bu tahminler üç CV tekrarının ortalaması olduğundan Tablo 4.1'e göre biraz iyimserdir.")
+
+H("4.3c Neden zamanla bozuldu? Drift analizi", 2)
+P("Eğitim dönemi (ilk %70) ile son %30 arasında her sensörün dağılımı Kolmogorov–Smirnov testiyle karşılaştırılmıştır (Bonferroni düzeltmeli). 446 sensörün 270'inde (%61) anlamlı kayma bulunmuştur. Eğitim döneminden seçilen 40 sensörün 31'i (%78) kaymıştır; yani modelin güvendiği sensörler, ortalamadan daha fazla değişmiştir. Bu, zaman bazlı performans düşüşünün makul bir açıklamasıdır.")
+F("drift.png", "Şekil: En çok kayan sensörün dağılımı ve haftalık ortalaması.")
+
+H("4.3d Klasik SPC ile karşılaştırma", 2)
+P("Sağlam ürünlerden öğrenilen PCA tabanlı Hotelling T² kontrol kartı (UCL = eğitim T² değerlerinin %99'u) zaman sıralı testte Random Forest ile kıyaslanmıştır.")
+sv = pd.read_csv(R + "spc_vs_ml.csv"); sv["a"] = sv.apply(lambda r: f"{r.prauc_lo:.3f} – {r.prauc_hi:.3f}", axis=1)
+table(sv, ["yontem", "prauc", "a", "roc", "baz"], ["Yöntem", "PR-AUC", "%95 aralık", "ROC-AUC", "Baz oran"])
+P("")
+P("İki yöntemin de aralığı baz oranı (0,055) içermektedir; yani zaman sıralı testte ne SPC ne de ML istatistiksel olarak rastgeleden ayrılabilmektedir. T² kartı test döneminde gözlemlerin yalnızca %3'ünde alarm vermiş ve alarm verilenlerin hiçbiri kusurlu çıkmamıştır. Sonuç, sorunun yöntemden çok verinin zamanla değişmesinden kaynaklandığı görüşünü desteklemektedir.")
+
 H("4.4 Yorumlama", 2)
 P("SHAP analizine göre kusur tahminine en çok katkı veren sensörler s477, s33, s510, s65 ve s130'dur. Sensörler anonim olduğundan fiziksel yorum yapılamamış, ancak gerçek bir uygulamada bu sensörler süreç mühendisleriyle birlikte kök neden analizine başlangıç noktası olabilir.")
 F("shap.png", "Şekil 3. SHAP özet grafiği (Random Forest).")
