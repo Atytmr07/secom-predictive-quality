@@ -1,5 +1,7 @@
 # Projeyi Sade Anlatım (Arkadaşımız için)
 
+**GitHub:** https://github.com/Atytmr07/secom-predictive-quality
+
 ## Proje ne yapıyor?
 Bir fabrikada (yarı iletken üretimi) her ürün için 590 sensör ölçümü var ve her ürünün sonunda "kusurlu / sağlam" bilgisi var. Soru: **Ürün üretilirken sensörlere bakarak kusurlu olacağını önceden tahmin edebilir miyiz?** Kusurlu ürünü erken yakalarsak hurda ve test maliyeti düşer.
 
@@ -26,6 +28,8 @@ Veri: SECOM (UCI), 1567 ürün, 590 sensör, sadece 104 kusurlu (%6,6). Yani sı
 
 ## Kurulum
 ```
+git clone https://github.com/Atytmr07/secom-predictive-quality.git
+cd secom-predictive-quality
 python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
