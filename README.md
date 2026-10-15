@@ -12,10 +12,11 @@ The main question is not only *which model is best*, but *whether the result hol
 | Chronological 70/30 split | Logistic Regression + SMOTE | 0.073 | 0.055 |
 | Walk-forward (expanding window) | Random Forest, all features | 0.067 | 0.042 |
 
-- Random cross-validation looks promising; time-aware validation removes most of that advantage (concept drift, few positives).
-- **Why:** 61% of sensors show statistically significant distribution shift between the first 70% and last 30% of the timeline (KS test, Bonferroni); 78% of the 40 sensors the model selects have drifted.
-- A classical SPC chart (PCA-based Hotelling T²) is equally at chance level on the chronological test, so the problem is the data drifting, not the method. Bootstrap 95% CIs include the random baseline for both.
-- Even a weak model can pay off with a cost-sensitive threshold: with a missed-defect cost 10x the false-alarm cost, total cost drops ~35% versus "no inspection" (cost ratios are assumptions, not plant data).
+- **Validation protocol matters.** For the same Random Forest, the lift over random guessing falls from 2.7 (random stratified CV) to 1.6 (blocked CV) to ~1.0 (chronological 70/30) and ~1.1 (walk-forward). See `reports/protocol_comparison.csv`.
+- **Sensors do drift:** 61% of usable sensors differ significantly between the first 70% and last 30% of the timeline (KS test, Bonferroni), and 78% of the 40 sensors selected by mutual information.
+- **But drift alone does not explain the collapse.** Sensors flagged as drifting using only the training period do shift more on the test period (mean KS 0.21 vs 0.11), yet a Random Forest trained on stable sensors performs no better than one trained on drifting or random sensors of the same size (all near chance). The weak out-of-time performance is probably due to a weak/non-stationary signal and few positives rather than to a few drifting sensors.
+- A classical SPC chart (PCA-based Hotelling T²) is also at chance level on the chronological test; bootstrap 95% CIs include the random baseline for both SPC and ML.
+- Cost-sensitive thresholds look useful under random CV (with a missed-defect cost 10x the false-alarm cost, total cost drops ~35% versus "no inspection"), but **this does not hold out of time**: when the threshold is chosen on the training period and applied to the later 30% of runs, models do not beat the best trivial strategy (no inspection / full inspection) for any tested cost ratio (`reports/cost_chronological.csv`). Cost ratios are assumptions, not plant data.
 
 ## Pipeline
 
@@ -29,8 +30,12 @@ src/eda.py           exploratory plots
 src/models.py        model comparison (CV + chronological split)
 src/temporal.py      walk-forward evaluation
 src/drift.py         KS-test drift analysis
+src/drift_link.py    drift vs predictive performance (stable/drifting/random sensor subsets)
+src/protocols.py     random vs blocked vs chronological vs walk-forward validation
+src/eda_extra.py     outliers, correlation structure, boxplots
 src/spc.py           Hotelling T2 vs Random Forest + bootstrap CIs
 src/bootstrap_cv.py  bootstrap CIs for CV results
+src/cost_time.py      cost analysis with threshold chosen on training period, tested on later runs
 src/cost_shap.py     cost-sensitive threshold + SHAP
 notebooks/01_ozet.ipynb   summary of all outputs
 reports/             figures and result tables
@@ -42,7 +47,7 @@ reports/             figures and result tables
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 # download https://archive.ics.uci.edu/static/public/179/secom.zip and unzip into data/raw/
-cd src && python eda.py && python models.py && python temporal.py && python drift.py && python spc.py && python bootstrap_cv.py && python cost_shap.py
+cd src && python eda.py && python models.py && python temporal.py && python drift.py && python drift_link.py && python protocols.py && python eda_extra.py && python spc.py && python bootstrap_cv.py && python cost_shap.py
 ```
 
 ## Limitations

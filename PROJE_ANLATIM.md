@@ -11,9 +11,10 @@ Veri: SECOM (UCI), 1567 ürün, 590 sensör, sadece 104 kusurlu (%6,6). Yani sı
 1. **Veri nasıl?** Çok sensör, çok eksik değer, az kusurlu ürün. (`src/eda.py` -> `reports/eda.png`)
 2. **Modeller:** Lojistik Regresyon, Random Forest, XGBoost kurduk. Rastgele karıştırarak test edince Random Forest en iyi (PR-AUC 0,19; rastgele tahmin 0,07). (`src/models.py`)
 3. **Tuzak:** Gerçek hayatta geçmişten öğrenip geleceği tahmin ederiz. Zamana göre bölünce (ilk %70 eğit, son %30 test) performans rastgele seviyesine düştü. (`src/models.py`, `src/temporal.py`)
-4. **Neden?** Sensörlerin %61'inin dağılımı zamanla değişmiş (drift); modelin seçtiği sensörlerde bu oran %78. (`src/drift.py`)
-5. **Klasik yöntem (SPC) daha mı iyi?** Hotelling T² kontrol kartını da denedik, o da rastgele seviyesinde. Yani sorun yöntem değil, veri zamanla değişiyor. (`src/spc.py`)
-6. **Para boyutu:** Kusuru kaçırmak yanlış alarmdan 10 kat pahalıysa, modelle eşik seçmek maliyeti ~%35 düşürüyor (oranlar varsayım). (`src/cost_shap.py`)
+4. **Neden? Drift var mı?** Sensörlerin %61'inin dağılımı zamanla değişmiş (drift); modelin seçtiği sensörlerde %78. AMA: drift'li sensörleri çıkarıp yalnızca stabil sensörlerle model kurunca da performans düzelmedi. Yani drift var ama tek başına açıklama değil; sinyal zaten zayıf ve zamanla değişken. (`src/drift.py`, `src/drift_link.py`)
+   - **Protokol karşılaştırması:** Aynı model rastgele CV'de rastgeleden 2,7 kat iyi, blok CV'de 1,6 kat, kronolojik testte ~1 kat. (`src/protocols.py`)
+5. **Klasik yöntem (SPC) daha mı iyi?** Hotelling T² kontrol kartını da denedik, o da rastgele seviyesinde. Yani sorun yalnızca yöntem seçimi değil; sinyal zayıf ve zamanla değişken. (`src/spc.py`)
+6. **Para boyutu:** Rastgele CV'de, kusuru kaçırmak yanlış alarmdan 10 kat pahalıysa modelle eşik seçmek maliyeti ~%35 düşürüyor (oranlar varsayım). AMA eşiği eğitim döneminde seçip sonraki dönemde uygulayınca model, "hiç kontrol etme" veya "hepsini kontrol et" stratejilerini yenemiyor. (`src/cost_shap.py`, `src/cost_time.py`)
 7. **Hangi sensörler önemli?** SHAP ile baktık (s477, s33, s510...). Sensör adları anonim, bu yüzden fiziksel yorum yok.
 
 **Ana mesaj:** Rastgele bölme ile umut verici görünen model, zaman sıralı testte çöküyor. Doğrulama tasarımı zamanı dikkate almalı.

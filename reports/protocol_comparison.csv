@@ -1,0 +1,13 @@
+model,protocol,n_test,base_rate,prauc,lift,lift_lo,lift_hi,roc
+LogReg (class_weight),Random stratified 5-fold,1567,0.066,0.12,1.81,1.42,2.685,0.636
+LogReg (class_weight),"Blocked 5-fold (contiguous, future in train)",1567,0.066,0.09,1.363,1.112,1.864,0.575
+LogReg (class_weight),Chronological 70/30,471,0.055,0.065,1.184,0.973,1.864,0.568
+LogReg (class_weight),Walk-forward (expanding),1067,0.042,0.053,1.249,0.969,2.122,0.551
+RandomForest,Random stratified 5-fold,1567,0.066,0.178,2.688,2.059,3.543,0.751
+RandomForest,"Blocked 5-fold (contiguous, future in train)",1567,0.066,0.106,1.602,1.235,2.255,0.607
+RandomForest,Chronological 70/30,471,0.055,0.053,0.953,0.814,1.392,0.483
+RandomForest,Walk-forward (expanding),1067,0.042,0.047,1.122,0.885,1.822,0.501
+XGBoost,Random stratified 5-fold,1567,0.066,0.139,2.091,1.688,2.759,0.713
+XGBoost,"Blocked 5-fold (contiguous, future in train)",1567,0.066,0.102,1.533,1.274,2.124,0.622
+XGBoost,Chronological 70/30,471,0.055,0.058,1.051,0.906,1.444,0.543
+XGBoost,Walk-forward (expanding),1067,0.042,0.055,1.298,1.061,1.862,0.592

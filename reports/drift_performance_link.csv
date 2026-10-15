@@ -1,0 +1,4 @@
+subset,n_sensors,prauc_mean,prauc_sd,roc_mean,roc_sd,lift,base_rate
+stabil sensörler,101,0.068,0.015,0.484,0.022,1.234,0.055
+drift'li sensörler,101,0.076,0.015,0.553,0.044,1.383,0.055
+rastgele (tüm sensörler havuzu),101,0.065,0.017,0.499,0.066,1.184,0.055

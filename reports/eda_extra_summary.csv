@@ -1,0 +1,9 @@
+statistic,value
+sensors_total,590.0
+constant,116.0
+gt50pct_missing,28.0
+analysed,446.0
+pairs_r_gt_0.9,347.0
+outlier_cell_rate,0.03
+mean_outlier_count_good,13.19
+mean_outlier_count_defect,16.21

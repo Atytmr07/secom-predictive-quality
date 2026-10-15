@@ -1,0 +1,13 @@
+model,c_fn,threshold_from_train,test_cost_model,test_cost_no_inspection,test_cost_full_inspection,train_cost_model,train_cost_no_inspection,test_best_trivial,test_saving_pct_vs_best_trivial
+LogReg (class_weight),5,0.885,130,130,445,377,390,130,0.0
+LogReg (class_weight),10,0.44,288,260,445,596,780,260,-10.8
+LogReg (class_weight),20,0.31,448,520,445,782,1560,445,-0.7
+LogReg (class_weight),50,0.17,599,1300,445,862,3900,445,-34.6
+RandomForest,5,0.215,131,130,445,351,390,130,-0.8
+RandomForest,10,0.155,273,260,445,502,780,260,-5.0
+RandomForest,20,0.09,562,520,445,685,1560,445,-26.3
+RandomForest,50,0.04,736,1300,445,826,3900,445,-65.4
+XGBoost,5,0.27,133,130,445,355,390,130,-2.3
+XGBoost,10,0.105,285,260,445,513,780,260,-9.6
+XGBoost,20,0.055,548,520,445,742,1560,445,-23.1
+XGBoost,50,0.005,556,1300,445,859,3900,445,-24.9

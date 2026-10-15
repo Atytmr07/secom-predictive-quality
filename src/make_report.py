@@ -55,7 +55,7 @@ P("Kaçırılan kusurlu ürün maliyeti (C_FN) ile gereksiz yere ayıklanan sağ
 c = pd.DataFrame({"Oran C_FN/C_FP": [5, 10, 20, 50], "En iyi eşik": [0.25, 0.11, 0.09, 0.09], "Model maliyeti": [466, 672, 852, 1212], "Hiç kontrol yok": [520, 1040, 2080, 5200], "Hepsini ayıkla": [1463] * 4})
 table(c, list(c.columns), list(c.columns))
 P("")
-P("Kaçırma maliyeti yükseldikçe model tabanlı eşik, her iki uç stratejiye göre daha düşük maliyet sağlamaktadır; oran 10'da kazanç kontrolsüz stratejiye göre yaklaşık %35'tir. Bu sayılar çapraz doğrulama tahminlerine dayanır ve yukarıdaki zamansal sınırlılık nedeniyle iyimser olabilir.")
+P("Rastgele çapraz doğrulama tahminlerinde, kaçırma maliyeti yükseldikçe model tabanlı eşik her iki uç stratejiye göre daha düşük maliyet sağlamaktadır; oran 10'da kazanç kontrolsüz stratejiye göre yaklaşık %35'tir. Ancak bu sayılar zamansal sınırlılık nedeniyle iyimserdir: eşik yalnızca eğitim döneminden seçilip son %30'luk dönemde uygulandığında (cost_time.py, reports/cost_chronological.csv) hiçbir model, denenen hiçbir maliyet oranında en iyi basit stratejiyi (hiç kontrol etmeme veya hepsini kontrol etme) geçememiştir.")
 F("cost_threshold.png", "Şekil 2. Eşiğe göre toplam maliyet (Random Forest, çapraz doğrulama tahminleri).")
 
 H("4.3b Belirsizlik: güven aralıkları", 2)
@@ -65,7 +65,7 @@ P("")
 P("Random Forest'ın aralığı diğer modellerin aralığıyla kısmen örtüşse de belirgin biçimde daha yüksektir ve rastgele tahmin düzeyinin (0,066) üzerindedir. Not: bu tahminler üç CV tekrarının ortalaması olduğundan Tablo 4.1'e göre biraz iyimserdir.")
 
 H("4.3c Neden zamanla bozuldu? Drift analizi", 2)
-P("Eğitim dönemi (ilk %70) ile son %30 arasında her sensörün dağılımı Kolmogorov–Smirnov testiyle karşılaştırılmıştır (Bonferroni düzeltmeli). 446 sensörün 270'inde (%61) anlamlı kayma bulunmuştur. Eğitim döneminden seçilen 40 sensörün 31'i (%78) kaymıştır; yani modelin güvendiği sensörler, ortalamadan daha fazla değişmiştir. Bu, zaman bazlı performans düşüşünün makul bir açıklamasıdır.")
+P("Eğitim dönemi (ilk %70) ile son %30 arasında her sensörün dağılımı Kolmogorov–Smirnov testiyle karşılaştırılmıştır (Bonferroni düzeltmeli). 446 sensörün 270'inde (%61) anlamlı kayma bulunmuştur. Eğitim döneminden seçilen 40 sensörün 31'i (%78) kaymıştır; yani modelin güvendiği sensörler, ortalamadan daha fazla değişmiştir. Ancak ek analizde (drift_link.py) drift'li sensörleri çıkarmanın performansı kurtarmadığı görülmüştür; bu nedenle drift, performans düşüşünün tek açıklaması olarak sunulmamalıdır.")
 F("drift.png", "Şekil: En çok kayan sensörün dağılımı ve haftalık ortalaması.")
 
 H("4.3d Klasik SPC ile karşılaştırma", 2)
@@ -73,7 +73,7 @@ P("Sağlam ürünlerden öğrenilen PCA tabanlı Hotelling T² kontrol kartı (U
 sv = pd.read_csv(R + "spc_vs_ml.csv"); sv["a"] = sv.apply(lambda r: f"{r.prauc_lo:.3f} – {r.prauc_hi:.3f}", axis=1)
 table(sv, ["yontem", "prauc", "a", "roc", "baz"], ["Yöntem", "PR-AUC", "%95 aralık", "ROC-AUC", "Baz oran"])
 P("")
-P("İki yöntemin de aralığı baz oranı (0,055) içermektedir; yani zaman sıralı testte ne SPC ne de ML istatistiksel olarak rastgeleden ayrılabilmektedir. T² kartı test döneminde gözlemlerin yalnızca %3'ünde alarm vermiş ve alarm verilenlerin hiçbiri kusurlu çıkmamıştır. Sonuç, sorunun yöntemden çok verinin zamanla değişmesinden kaynaklandığı görüşünü desteklemektedir.")
+P("İki yöntemin de aralığı baz oranı (0,055) içermektedir; yani zaman sıralı testte ne SPC ne de ML istatistiksel olarak rastgeleden ayrılabilmektedir. T² kartı test döneminde gözlemlerin yalnızca %3'ünde alarm vermiş ve alarm verilenlerin hiçbiri kusurlu çıkmamıştır. Sonuç, sorunun yalnızca yöntem seçiminden kaynaklanmadığını, verideki sinyalin zayıf ve zamanla değişken olduğunu düşündürmektedir.")
 
 H("4.4 Yorumlama", 2)
 P("SHAP analizine göre kusur tahminine en çok katkı veren sensörler s477, s33, s510, s65 ve s130'dur. Sensörler anonim olduğundan fiziksel yorum yapılamamış, ancak gerçek bir uygulamada bu sensörler süreç mühendisleriyle birlikte kök neden analizine başlangıç noktası olabilir.")
@@ -87,7 +87,7 @@ B("Maliyet oranları varsayımdır.")
 B("Hiperparametre ayarı bilinçli olarak sınırlı tutulmuştur; az sayıda pozitif örnekle ayar, gürültüye aşırı uyum riski taşır.")
 
 H("6. Sonuç ve Öneriler")
-P("Çalışma, SECOM verisinde rastgele çapraz doğrulamayla umut verici görünen sonuçların zaman sıralı doğrulamada büyük ölçüde kaybolduğunu göstermiştir. Kestirimci kalite uygulamalarında doğrulama tasarımının zamanı dikkate alması gerektiği, bu çalışmanın ana çıkarımıdır. Maliyet duyarlı eşik analizi ise zayıf bir modelin bile doğru karar kuralıyla ekonomik değer üretebileceğini göstermektedir. Gelecek çalışmalarda drift tespiti, süreç kontrol kartlarıyla (SPC) hibrit kullanım ve anlamları bilinen sensörlerle özellik mühendisliği önerilir.")
+P("Çalışma, SECOM verisinde rastgele çapraz doğrulamayla umut verici görünen sonuçların zaman sıralı doğrulamada büyük ölçüde kaybolduğunu göstermiştir. Kestirimci kalite uygulamalarında doğrulama tasarımının zamanı dikkate alması gerektiği, bu çalışmanın ana çıkarımıdır. Maliyet duyarlı eşik analizi rastgele çapraz doğrulamada ekonomik değer gösterse de, bu değer zaman sıralı testte ortaya çıkmamıştır; yani yanıltıcı doğrulama yalnızca istatistiksel metrikleri değil, maliyet çıkarımlarını da şişirmektedir. Gelecek çalışmalarda drift tespiti, süreç kontrol kartlarıyla (SPC) hibrit kullanım ve anlamları bilinen sensörlerle özellik mühendisliği önerilir.")
 
 H("Kaynaklar")
 P("McCann, M. & Johnston, A. (2008). SECOM Data Set. UCI Machine Learning Repository.")

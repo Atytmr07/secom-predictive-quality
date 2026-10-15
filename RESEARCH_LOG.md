@@ -36,11 +36,19 @@ Durum: **Özet** = sadece özet/yayıncı sayfası görüldü (AI ile tarandı).
 - SPC (PCA tabanlı Hotelling T², UCL %99): zaman testinde PR-AUC 0,066, ML 0,053; ikisinin de %95 bootstrap aralığı baz oranı (0,055) kapsıyor.
 - Maliyet analizi: C_FN/C_FP oranları **varsayımdır**, gerçek fabrika verisi değil.
 
+### 2026-10-16 ek analizler (gerçek çıktılar)
+- **Protokol karşılaştırması** (`reports/protocol_comparison.csv`): Random Forest lift'i rastgele stratified CV'de 2,69 -> blok CV 1,60 -> kronolojik 70/30 0,95 -> walk-forward 1,12. LogReg ve XGBoost'ta da aynı yönde düşüş. RQ1/H1 destekleniyor (güven aralıkları geniş).
+- **Drift-performans bağı** (`reports/drift_performance_link.csv`): Eğitim içinden drift'li işaretlenen sensörler test döneminde de daha çok kayıyor (ort. KS 0,213 vs 0,107; H2a destekleniyor). Ama yalnızca stabil sensörlerle kurulan RF (PR-AUC 0,068) drift'li sensörlerle kurulandan (0,076) veya rastgele alt kümeden (0,065) daha iyi DEĞİL; hepsi rastgeleye yakın (baz 0,055). **H2b desteklenmiyor** -> "drift performans kaybını açıklıyor" iddiası kaldırıldı.
+- **Maliyet, kronolojik (katı) kontrol** (`reports/cost_chronological.csv`): Eşik eğitim döneminden seçilip son %30'da uygulanınca model, en iyi basit stratejiyi (hiç kontrol etme / hepsini kontrol et) hiçbir maliyet oranında yenemiyor. Rastgele CV'deki ~%35 kazanç iyimserdi. Bu bulgu README, PROJE_ANLATIM ve eski raporda düzeltildi.
+- **Ek EDA** (`reports/eda_extra_summary.csv`, `eda_extra.png`, `boxplots_top_sensors.png`): 446 kalan sensörde hücrelerin %3'ü aykırı (robust z>3,5); 347 sensör çifti |r|>0,9; kusurlu ürünlerde ortalama aykırı sensör sayısı 16,2, sağlamlarda 13,2.
+
 ## 4. Kararlar ve metodoloji değişiklikleri
 - %50'den fazla eksik sensörler çıkarıldı (hedef etiketine bakmadan verilen kural).
 - Tüm ön işleme/seçim/SMOTE adımları Pipeline içinde, yalnızca eğitim katmanında öğreniliyor (sızıntı önleme).
 - Mutual information seçimine `random_state=0` verildi; öncesinde sonuçlar her çalıştırmada biraz değişiyordu.
 - Hiperparametre ayarı bilinçli olarak yapılmadı (104 pozitif örnekle gürültüye uyum riski). Nested CV Report 2/3'te değerlendirilebilir.
+- Drift'li/stabil sensör ayrımı sızıntıyı önlemek için yalnızca eğitim dönemi içinden (ilk yarı vs ikinci yarı) yapılıyor.
+- Eşik seçimi kronolojik testte yalnızca eğitim dönemi OOF tahminlerinden yapılıyor.
 - Zaman bazlı değerlendirme eklendi, çünkü rastgele CV'nin iyimser olabileceği düşünüldü (drift literatürü).
 
 ## 5. Karşılaşılan sorunlar
@@ -57,5 +65,7 @@ Durum: **Özet** = sadece özet/yayıncı sayfası görüldü (AI ile tarandı).
 - [ ] Tablodaki 12 makalenin tam metin okunması (yukarıdaki tablo)
 - [ ] Künyelerin tamamlanması (cilt/sayfa/DOI)
 - [ ] Report 1'in kendi cümlelerimizle gözden geçirilmesi
-- [ ] Report 2: yöntem tasarımı (nested CV, drift eşikleri, maliyet oranı gerekçesi)
+- [ ] Report 2 (13 Kasım): taslak `reports/Report2_Methodology.docx` (src/make_report2.py) hazır; [köşeli parantezli] yerleri ve Report 1 geri bildirimine göre revizyonu tamamlayın
+- [ ] Report 3 (4 Aralık): sabit seed ile `python run_all.py`, sonuçları dondurup yorumlayın
+- [ ] Not: H2b ve kronolojik maliyet sonuçları hipotezleri desteklemiyor; rapora olduğu gibi yazılacak
 - [ ] İsteğe bağlı: ikinci veri seti ile doğrulama
