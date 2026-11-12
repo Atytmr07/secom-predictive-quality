@@ -27,11 +27,11 @@ def table(header, rows, size=9.5):
 d.add_heading("Report 2: Methodology and Research Design", 0)
 d.add_heading("Predictive Quality in Semiconductor Manufacturing: Can Defect-Prediction Models Survive Process Drift?", 2)
 P("[Student Name 1 – ID] · [Student Name 2 – ID]\nIndependent Study and Industrial Applications · Due: 13 November 2026\n"
-  "DRAFT – to be revised after Report 1 feedback. Items in [brackets] must be completed by the authors.")
+  "Items in [brackets] must be completed by the authors.")
 
 # ------------------------------------------------------------------ 1
 H("1. Refined Research Problem")
-P("Report 1 identified that studies on the SECOM semiconductor dataset concentrate on data preparation and on improving prediction scores, while the concept-drift literature suggests that models validated on randomly selected records may be over-optimistic about future production. [Revise this paragraph after Report 1 feedback.]")
+P("Report 1 identified that studies on the SECOM semiconductor dataset concentrate on data preparation and on improving prediction scores, while the concept-drift literature suggests that models validated on randomly selected records may be over-optimistic about future production. The course instructor reviewed Report 1 and approved the topic and the dataset, so the research problem remains as stated there.")
 P("To keep the study achievable within the semester, the scope is narrowed to one public dataset (SECOM), three standard classifiers, one classical multivariate SPC baseline, and four validation protocols. Deep learning, online/adaptive learning and additional datasets are explicitly left to future work.")
 P("Transparency note. A pilot version of the analysis was run while preparing Report 1 to check feasibility (code: https://github.com/Atytmr07/secom-predictive-quality). The hypotheses below were therefore formulated with some knowledge of the pilot. In Report 3, results will be reported as exploratory where this matters, and the full analysis will be re-run with fixed random seeds before any value is reported.")
 

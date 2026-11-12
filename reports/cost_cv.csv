@@ -1,0 +1,5 @@
+c_fn,best_threshold,model_cost,no_inspection,full_inspection
+5,0.251,466,520,1463
+10,0.111,672,1040,1463
+20,0.09,852,2080,1463
+50,0.09,1212,5200,1463

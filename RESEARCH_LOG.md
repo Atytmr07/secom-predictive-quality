@@ -22,6 +22,11 @@ Durum: **Özet** = sadece özet/yayıncı sayfası görüldü (AI ile tarandı).
 
 **Önemli:** Research Gap 1 ("SECOM çalışmaları zaman bazlı doğrulama yapmıyor") şu an sadece özetlere dayanıyor. Tam metinde biri yapıyorsa gap ifadesi yumuşatılmalı.
 
+### 2026-11-13 – Hoca geri bildirimi
+- Report 1 hoca tarafından beğenildi; konu ve veri seti (SECOM) onaylandı, bu şekilde devam edilecek.
+- Makale taslağı hazırlandı: `reports/Paper_SECOM_validation.docx` (üreten kod: `src/make_paper.py`, figürler: `src/make_paper_figures.py`). Tüm sayılar `reports/*.csv` dosyalarından geliyor. `cost_shap.py` artık `cost_cv.csv` ve `shap_top.csv` de yazıyor.
+- Makalede açıkça belirtilen dürüstlük notları: (a) hipotezler pilot sonrası yazıldı; (b) kronolojik testte yalnızca 26 kusurlu var; (c) stabil sensör havuzu tam 101 sensör olduğu için o gruptaki "20 çekiliş" aynı sensörlerin farklı sütun sırasıdır; (d) literatür özetlerden doğrulandı, tam metin okunmadı.
+
 ## 2. Veri kaynağı
 - UCI SECOM: https://archive.ics.uci.edu/dataset/179/secom (McCann & Johnston, 2008). Dosyalar: `secom.data`, `secom_labels.data`, `secom.names`. İndirme tarihi: 2026-10-05.
 - 1567 gözlem, 590 sensör, 104 kusurlu (%6,6), 19.07.2008 – 17.10.2008.
