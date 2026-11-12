@@ -14,11 +14,11 @@ steps = [
     "Results → answers to RQ1–RQ4",
     "Discussion, limitations, conclusion",
 ]
-fig, ax = plt.subplots(figsize=(7.5, 11)); ax.axis("off"); ax.set_xlim(0, 10); ax.set_ylim(-0.3, len(steps) * 1.6)
+fig, ax = plt.subplots(figsize=(8.4, 8.2)); ax.axis("off"); ax.set_xlim(0, 10); ax.set_ylim(-0.3, len(steps) * 1.25)
 for i, t in enumerate(steps):
-    y = (len(steps) - 1 - i) * 1.6
-    ax.add_patch(FancyBboxPatch((0.7, y), 8.6, 1.05, boxstyle="round,pad=0.05", fc="#e8f0fe", ec="#3b5bdb", lw=1.4))
-    ax.text(5, y + 0.52, t, ha="center", va="center", fontsize=10)
+    y = (len(steps) - 1 - i) * 1.25
+    ax.add_patch(FancyBboxPatch((0.4, y), 9.2, 0.92, boxstyle="round,pad=0.05", fc="white", ec="black", lw=1.2))
+    ax.text(5, y + 0.46, t, ha="center", va="center", fontsize=10.5)
     if i < len(steps) - 1:
-        ax.annotate("", xy=(5, y - 0.45), xytext=(5, y), arrowprops=dict(arrowstyle="-|>", color="#3b5bdb", lw=1.6))
+        ax.annotate("", xy=(5, y - 0.3), xytext=(5, y), arrowprops=dict(arrowstyle="-|>", color="black", lw=1.3))
 plt.tight_layout(); plt.savefig("../reports/flowchart.png", dpi=150)

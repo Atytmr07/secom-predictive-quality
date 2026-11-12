@@ -1,6 +1,7 @@
 from docx import Document
 from docx.shared import Pt, Cm
 from docx.enum.section import WD_ORIENT, WD_SECTION
+from docstyle import restyle
 
 d = Document()
 st = d.styles["Normal"]; st.font.name = "Calibri"; st.font.size = Pt(11)
@@ -130,4 +131,5 @@ refs = [
 ]
 for r in refs:
     P(r)
+restyle(d, 11, 1.15)
 d.save("reports/Report1_Literature_Review.docx")

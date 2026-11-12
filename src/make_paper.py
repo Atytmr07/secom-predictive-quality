@@ -3,6 +3,7 @@ import pandas as pd
 from docx import Document
 from docx.shared import Pt, Inches
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docstyle import restyle
 
 R = "reports/"
 d = Document()
@@ -249,5 +250,6 @@ refs = [
 ]
 for r in refs:
     P(r)
-d.save(R + "Paper_SECOM_validation.docx")
+restyle(d, 11.5, 1.15)
+d.save(R + "Paper_SECOM_validation_v2.docx")
 print("saved; tables", tab_n[0], "figures", fig_n[0])
